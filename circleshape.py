@@ -1,4 +1,5 @@
 import pygame
+from player import *
 
 # Base class for game objects
 class CircleShape(pygame.sprite.Sprite):
@@ -25,4 +26,3 @@ class CircleShape(pygame.sprite.Sprite):
             <= self.radius + object.radius
         ):
             return True
-        return False        

@@ -29,6 +29,7 @@ def main():
 
     Player.containers = (updateable, drawable)
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+    player_lives = PLAYER_LIFE
 
     while True:
         for event in pygame.event.get():
@@ -39,14 +40,22 @@ def main():
             object.update(dt)
 
         for asteroid in asteroids:
-            for bullet in shots:
-                if bullet.is_colliding(asteroid):
+            for shot in shots:
+                if shot.is_colliding(asteroid):
+                    shot.kill()
                     asteroid.split()
 
         for asteroid in asteroids:
-            if asteroid.is_colliding(player):
-                print("Game over!")
-                sys.exit()
+            if asteroid.is_colliding(player) and not player.invulnerable:
+                player_lives -= 1
+                player.invulnerable = True
+                player.reset_invul_timer
+                print(f"player hit! Lives remaining {player_lives}")
+
+
+        if player_lives == 0:
+            print("Game Over!!")
+            sys.exit()
 
         screen.fill("black")
 

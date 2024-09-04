@@ -2,6 +2,7 @@ import pygame
 from circleshape import CircleShape
 from constants import *
 from shot import *
+from asteroid import *
 
 
 class Player(CircleShape):
@@ -12,6 +13,10 @@ class Player(CircleShape):
         self.radius = PLAYER_RADIUS
         self.rotation = 0
         self.shot_timer = 0
+        self.invulnerable = False
+        self.invul_timer = PLAYER_LIFE_TIMER
+        self.blink_timer = 0
+        self.visible = True
         
     
 
@@ -25,7 +30,8 @@ class Player(CircleShape):
 
 
     def draw(self, screen):
-        pygame.draw.polygon(screen, "white", self.triangle(), 2)
+        if self.visible or not self.invulnerable:
+            pygame.draw.polygon(screen, "white", self.triangle(), 2)
     
 
     def rotate(self, dt):
@@ -34,6 +40,7 @@ class Player(CircleShape):
 
     def update(self, dt):
         self.shot_timer -= dt
+        self.check_invul_status(dt)
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_a]:
@@ -51,6 +58,12 @@ class Player(CircleShape):
         if keys[pygame.K_SPACE]:
             self.shoot()
 
+        if self.invulnerable:
+            self.blink_timer += dt
+            if self.blink_timer >= 0.1:
+                self.visible = not self.visible
+                self.blink_timer = 0
+
 
     def move(self, dt):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
@@ -63,5 +76,15 @@ class Player(CircleShape):
         self.shot_timer = PLAYER_SHOOT_COOLDOWN
         shot = Shot(self.position.x, self.position.y)
         shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOT_SPEED
-        
 
+
+    def check_invul_status(self, dt):
+        if self.invulnerable:
+            self.invul_timer -= dt
+            if self.invul_timer < 0:
+                self.invulnerable = False
+                self.reset_invul_timer()
+
+    def reset_invul_timer(self):
+        self.invul_timer = PLAYER_LIFE_TIMER
+        
