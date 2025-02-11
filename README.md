@@ -1,6 +1,6 @@
 # Asteroids game
 
-I built this game using Pygame to solidy my sjills with object-oriented programming
+I built this game using Pygame to solidy my skills with object-oriented programming
 
 ## Play my version of the infamouse Asteroids game
 
