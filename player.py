@@ -31,7 +31,7 @@ class Player(CircleShape):
 
     def draw(self, screen):
         if self.visible or not self.invulnerable:
-            pygame.draw.polygon(screen, "white", self.triangle(), 2)
+            pygame.draw.polygon(screen, "red", self.triangle(), 2)
     
 
     def rotate(self, dt):

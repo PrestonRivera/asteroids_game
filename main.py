@@ -8,13 +8,19 @@ from circleshape import CircleShape
 from shot import Shot
 
 
+
 def main():
     print("Starting asteroids!")
 
     pygame.init()
+    pygame.display.set_caption("Asteroids")
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
     dt = 0
+
+
+    bg = pygame.image.load("asteroids.png/starsphoto.png")
+    ship = pygame.image.load("asteroids.png/spaceRocket.png")
 
     updateable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
@@ -57,7 +63,7 @@ def main():
             print("Game Over!!")
             sys.exit()
 
-        screen.fill("black")
+        screen.blit(bg, (0, 0))
 
         for object in drawable:
             object.draw(screen)
@@ -65,7 +71,6 @@ def main():
         pygame.display.flip()
 
         dt = clock.tick(60) / 1000
-
 
 
 if __name__ == "__main__":
